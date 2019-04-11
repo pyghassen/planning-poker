@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'home.apps.HomeConfig',
+    'polls.apps.PollsConfig',
 
 ]
 
