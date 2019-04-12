@@ -87,13 +87,14 @@ class TaskListViewTest(TestCase):
         self.assertTemplateUsed(response, 'polls/task_list.html')
 
     def test_list_task_returns_task_list(self):
-        Task.objects.create(name='Task 1')
-        Task.objects.create(name='Task 2')
+        Task.objects.create(name='Task 1', created_by=self.user)
+        Task.objects.create(name='Task 2', created_by=self.user)
         response = self.client.get(reverse('task-list'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'polls/task_list.html')
         self.assertContains(response, 'Task 1')
         self.assertContains(response, 'Task 2')
+        self.assertContains(response, self.user.username)
 
     def test_list_task_returns_emptytask_list(self):
         response = self.client.get(reverse('task-list'))
