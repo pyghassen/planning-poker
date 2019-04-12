@@ -2,7 +2,7 @@
   <h5 class="my-0 mr-md-auto font-weight-normal">Planning Poker</h5>
   {% if user.is_authenticated %}
   <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="#">Create Task</a>
+    <a class="p-2 text-dark" href="{% url 'task-create' %}">Create Task</a>
     <a class="p-2 text-dark" href="#">List Tasks</a>
   </nav>
   <a class="btn btn-outline-primary" href="#">Logout</a>
