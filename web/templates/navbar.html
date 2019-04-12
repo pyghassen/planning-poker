@@ -5,6 +5,6 @@
     <a class="p-2 text-dark" href="{% url 'task-create' %}">Create Task</a>
     <a class="p-2 text-dark" href="{% url 'task-list' %}">List Tasks</a>
   </nav>
-  <a class="btn btn-outline-primary" href="#">Logout</a>
+  <a class="btn btn-outline-primary" href="{% url 'account_logout' %}">Logout</a>
   {% endif %}
 </div>
