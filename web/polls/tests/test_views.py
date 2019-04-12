@@ -1,26 +1,3 @@
-# from django.contrib.auth import get_user_model
-#
-# class HomePageTests(TestCase):
-#
-#     """Test whether our blog entries show up on the homepage"""
-#
-#     def setUp(self):
-#         self.user = get_user_model().objects.create(username='some_user')
-#
-#     def test_one_entry(self):
-#         Entry.objects.create(title='1-title', body='1-body', author=self.user)
-#         response = self.client.get('/')
-#         self.assertContains(response, '1-title')
-#         self.assertContains(response, '1-body')
-#
-#     def test_two_entries(self):
-#         Entry.objects.create(title='1-title', body='1-body', author=self.user)
-#         Entry.objects.create(title='2-title', body='2-body', author=self.user)
-#         response = self.client.get('/')
-#         self.assertContains(response, '1-title')
-#         self.assertContains(response, '1-body')
-#         self.assertContains(response, '2-title')
-
 from django.test import TestCase
 from django.urls import reverse
 
@@ -101,3 +78,32 @@ class TaskListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'polls/task_list.html')
         self.assertContains(response, 'No tasks were created yet!')
+
+
+class TaskDetailViewTest(TestCase):
+    def setUp(self):
+        username = 'testuser'
+        password = 'testpass'
+        User = get_user_model()
+        self.user = User.objects.create_user(username, password=password)
+        self.client.login(username=username, password=password)
+        self.task = Task.objects.create(name='Task 1', created_by=self.user)
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get(f'/polls/task/{self.task.id}:')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('task-detail', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('task-detail', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'polls/task_detail.html')
+
+    def test_view_returns_task_detail(self):
+        response = self.client.get(reverse('task-detail', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'polls/task_detail.html')
+        self.assertContains(response, 'Task 1')
