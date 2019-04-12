@@ -2,4 +2,4 @@
 
 echo "Starting the Planning poker server"
 set -e
-docker-compose up -d web
+docker-compose up --build -d web
