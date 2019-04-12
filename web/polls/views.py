@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
@@ -22,4 +22,8 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
 
 class TaskListView(LoginRequiredMixin, ListView):
+    model = Task
+
+
+class TaskDetailView(LoginRequiredMixin, DetailView):
     model = Task
