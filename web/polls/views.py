@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from polls.models import Task
-from pools.forms import TaskForm
+from polls.forms import TaskForm
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
