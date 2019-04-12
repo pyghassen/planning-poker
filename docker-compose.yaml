@@ -6,7 +6,17 @@ services:
      - "8000:8000"
     volumes:
       - ./:/opt/
+    environment:
+      - CACHE_HOST=cache-server
+
     command: "python web/manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - cache-server
+
+  cache-server:
+    image: "redis:5.0.4-alpine"
+    ports:
+     - 6379:6379
 
   test:
     build: .
