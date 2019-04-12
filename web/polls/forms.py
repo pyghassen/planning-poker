@@ -14,5 +14,5 @@ class TaskForm(forms.ModelForm):
         return super().__init__(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.instance.user_id=self.user.id
+        self.instance.created_by=self.user
         return super().save(*args, **kwargs)
