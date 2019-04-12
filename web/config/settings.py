@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'home.apps.HomeConfig',
     'polls.apps.PollsConfig',
+    'channels',
 
 ]
 
@@ -150,3 +151,16 @@ ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION ='none'
 
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+
+# Django Channels Configuration
+
+ASGI_APPLICATION = "config.routing.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [(os.environ.get('CACHE_HOST'), 6379)],
+        },
+    },
+}
