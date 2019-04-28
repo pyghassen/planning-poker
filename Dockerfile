@@ -8,4 +8,8 @@ RUN pip install -r /tmp/dev.txt
 
 RUN rm /tmp/*.txt
 
+RUN adduser -D -s /bin/sh appuser
+
+USER appuser
+
 WORKDIR /opt
