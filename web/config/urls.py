@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from home.views import HomeView
 
-urlpatterns = [
+urlpatterns = [ # pylint: disable=C0103
     path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
