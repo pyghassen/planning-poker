@@ -1,5 +1,7 @@
 # planning-poker-app
 
+[![Build Status](https://travis-ci.org/pyghassen/planning-poker.svg?branch=master)](https://travis-ci.org/pyghassen/planning-poker)
+
 Purpose
 ========
 Planning poker is collaborative planning app for to estimate how complex a task is for a team of developers to complete.
@@ -22,11 +24,11 @@ How to start
 
  2. Run the tests:
 
-     `./test.sh`
+     `docker-compose run test`
 
  3. Start the server:
 
-     `./run.sh`
+     `docker-compose up --build web`
 
  4. Open browser on the following address:
 
