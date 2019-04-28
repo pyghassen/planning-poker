@@ -9,7 +9,7 @@ services:
     environment:
       - CACHE_HOST=cache-server
 
-    command: "python web/manage.py runserver 0.0.0.0:8000"
+    command: "make run"
     depends_on:
       - cache-server
 
@@ -19,9 +19,20 @@ services:
      - 6379:6379
 
   test:
-    build: .
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
     volumes:
       - ./:/opt/
-    command: "python web/manage.py test web"
+    command: "make test"
     stdin_open: true
     tty: true
+
+  lint:
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./:/opt/
+    command: "make lint"
+    stdin_open: true
