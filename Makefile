@@ -1,8 +1,7 @@
 clean:
 	./scripts/clean.sh
 
-test:
-	./scripts/clean.sh
+test: clean
 	./scripts/test.sh
 
 lint:
