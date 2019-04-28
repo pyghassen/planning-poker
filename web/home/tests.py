@@ -33,10 +33,8 @@ class HomeViewTest(TestCase):
 
     def test_view_uses_correct_template(self):
         """
-        Verifies getting 200 as status code when we send request to `/` while
-        we use reverse function to get the URL and make sure we use correct
-        tempalte for the response.
+        Verifies when we send request to `/` while we use reverse function to
+        get the URL and make sure we use correct tempalte for the response.
         """
         response = self.client.get(reverse('home'))
-        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
