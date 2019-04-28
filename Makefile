@@ -9,4 +9,4 @@ lint:
 	./scripts/lint.sh
 
 run:
-	./scripts/run.sh $(input) $(output)
+	./scripts/run.sh
