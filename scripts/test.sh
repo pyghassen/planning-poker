@@ -2,4 +2,5 @@
 set -e
 
 echo "Running tests .."
-python web/manage.py test web
+coverage run --source='web' web/manage.py test web
+coverage report
