@@ -1,3 +1,2 @@
--r common.txt
-pytest
-ipdb
+-r dev.txt
+codecov
