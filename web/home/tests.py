@@ -18,14 +18,14 @@ class HomeViewTest(TestCase):
 
     def test_view_url_exists_at_desired_location(self):
         """
-        Verifying getting 200 as status code when we send request to `/`.
+        Verifies getting 200 as status code when we send request to `/`.
         """
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
         """
-        Verifying getting 200 as status code when we send request to `/` while
+        Verifies getting 200 as status code when we send request to `/` while
         we use reverse function to get the URL.
         """
         response = self.client.get(reverse('home'))
@@ -33,7 +33,7 @@ class HomeViewTest(TestCase):
 
     def test_view_uses_correct_template(self):
         """
-        Verifying getting 200 as status code when we send request to `/` while
+        Verifies getting 200 as status code when we send request to `/` while
         we use reverse function to get the URL and make sure we use correct
         tempalte for the response.
         """
