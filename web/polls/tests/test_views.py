@@ -130,6 +130,62 @@ class TaskListViewTest(TestCase):
         self.assertContains(response, 'No tasks were created yet!')
 
 
+class TaskDeleteViewTest(TestCase):
+    """
+    Task delete view test class definition.
+    """
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up required objects like creating a test user and task object.
+        """
+        cls.user = create_user()
+        cls.task = Task.objects.create( # pylint: disable=E1101
+            name='Task 1', created_by=cls.user
+        )
+
+    def setUp(self):
+        """Sets up the user login step."""
+        self.client.force_login(self.user)
+
+    def test_view_url_exists_at_desired_location(self):
+        """
+        Verifies getting 200 as status code when we send a GET request to
+        `/polls/task/delete/<task_id>`.
+        """
+        response = self.client.get(f'/polls/task/delete/{self.task.id}')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        """
+        Verifies getting 200 as status code when we send a GET request to
+        `/polls/task/delete/<task_id>` while we use reverse function to get the
+        URL.
+        """
+        response = self.client.get(reverse('task-delete', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        Verifies when we send a GET request to `/polls/task/delete/<task_id>`
+        we use correct tempalte for the response.
+        """
+        response = self.client.get(reverse('task-delete', args=[self.task.id]))
+        self.assertTemplateUsed(response, 'polls/task_confirm_delete.html')
+
+    def test_delete_task_returns_task_list_page(self):
+        """
+        Verifies when we send a POST request to `/polls/task/delete/<task_id>`
+        it redirecting to the task list view and the deleted task wont't show up
+        anymore.
+        """
+        response = self.client.post(
+            reverse('task-delete', args=[self.task.id]), follow=True
+        )
+        self.assertTemplateUsed(response, 'polls/task_list.html')
+        self.assertNotContains(response, self.task.name)
+
+
 class TaskDetailViewTest(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -150,7 +206,7 @@ class TaskDetailViewTest(TestCase):
         Verifies getting 200 as status code when we send request to
         `/polls/task/<task.id>`.
         """
-        response = self.client.get(f'/polls/task/{self.task.id}:')
+        response = self.client.get(f'/polls/task/{self.task.id}')
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
