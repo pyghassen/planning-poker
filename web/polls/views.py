@@ -23,6 +23,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 
 class TaskListView(LoginRequiredMixin, ListView):
     model = Task
+    ordering = '-created_at'
 
 
 class TaskDetailView(LoginRequiredMixin, DetailView):
