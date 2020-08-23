@@ -1,9 +1,9 @@
-from django.views.generic import CreateView, ListView, DetailView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, ListView, DetailView, DeleteView
 
-from polls.models import Task, Vote
 from polls.forms import TaskForm, VoteForm
+from polls.models import Task, Vote
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -34,6 +34,10 @@ class TaskDetailView(LoginRequiredMixin, DetailView):
         context['vote_list'] = Vote.objects.filter(task_id=self.object.id)
         return context
 
+
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
+    model = Task
+    success_url = reverse_lazy('task-list')
 
 
 class VoteCreateView(LoginRequiredMixin, CreateView):

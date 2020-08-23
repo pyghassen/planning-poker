@@ -1,24 +1,20 @@
 """
 Polls models test module.
 """
-from allauth.utils import get_user_model
 from django.test import TestCase
 
 from polls.models import Task, Vote
+from polls.tests.helpers import create_user
 
 
 class TaskModelTest(TestCase):
     """Task model test calss definition."""
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """
         Creates object requirements.
         """
-        username = 'testuser'
-        password = 'testpass'
-        user_model_class = get_user_model()
-        self.user = user_model_class.objects.create_user(
-            username, password=password
-        )
+        cls.user = create_user()
 
     def test_string_representation(self):
         """Verifies calling the __str__ method returns the expected string."""
@@ -39,23 +35,17 @@ class TaskModelTest(TestCase):
         self.assertEqual(created_task, fetched_task)
 
 
-
 class VoteModelTest(TestCase):
     """Vote model test calss definition."""
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """
         Creates object requirements.
         """
-        username = 'testuser'
-        password = 'testpass'
-        user_model_class = get_user_model()
-        self.user = user_model_class.objects.create_user(
-            username, password=password
+        cls.user = create_user()
+        cls.task = Task.objects.create( # pylint: disable=E1101
+            name="Task 1", created_by=cls.user
         )
-        self.task = Task.objects.create( # pylint: disable=E1101
-            name="Task 1", created_by=self.user
-        )
-
 
     def test_string_representation(self):
         """Verifies calling the __str__ method returns the expected string."""

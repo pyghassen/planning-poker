@@ -1,8 +1,8 @@
-from allauth.utils import get_user_model
 from django.test import TestCase
 
 from polls.forms import TaskForm, VoteForm
 from polls.models import Task, PLANNING_CARDS
+from polls.tests.helpers import create_user
 
 
 class TaskFormTest(TestCase):
@@ -11,10 +11,7 @@ class TaskFormTest(TestCase):
         Verifies that the user instance is assigned to created_by field from
         the created Task model instance.
         """
-        user_model_class = get_user_model()
-        user = user_model_class.objects.create_user(
-            username='testuser', password='testpass'
-        )
+        user = create_user()
 
         task_form = TaskForm(user=user, data={'name':'Task name 1'})
         self.assertEqual(task_form.user, user)
@@ -30,11 +27,8 @@ class VoteFormTest(TestCase):
         Verifies that the user instance, and the task_id were assigned to
         correctly to the Vote model instance.
         """
-        user_model_class = get_user_model()
-        user = user_model_class.objects.create_user(
-            username='testuser', password='testpass'
-        )
-        task = Task.objects.create(created_by=user, name='Task name 1')
+        user = create_user()
+        task = Task.objects.create(created_by=user, name='Task name 1') # pylint: disable=E1101
         # Picking up the first value from Planning cards values tuple.
         value = PLANNING_CARDS[0][0]
 

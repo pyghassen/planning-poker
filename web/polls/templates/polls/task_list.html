@@ -12,14 +12,17 @@
         <th>Task name</th>
         <th>Created by</th>
         <th>Created at</th>
-        <th>Action</th>
+        <th>Actions</th>
       </tr>
       {% for task in object_list %}
       <tr>
         <td><a href="{% url 'task-detail' task.id %}">{{ task.name }}</a></td>
         <td>{{ task.created_by }}</td>
         <td>{{ task.created_at }}</td>
-        <td><a href="{% url 'vote-create' task.id %}" class="btn btn-primary">Vote</a></td>
+        <td>
+          <a href="{% url 'vote-create' task.id %}" class="btn btn-primary">Vote</a>
+          <a href="{% url 'task-delete' task.id %}" class="btn btn-danger">Delete</a>
+        </td>
       </tr>
       {% endfor %}
     </table>
