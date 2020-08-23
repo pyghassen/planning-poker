@@ -4,26 +4,22 @@ Task views test modules.
 from django.test import TestCase
 from django.urls import reverse
 
-from allauth.utils import get_user_model
-
 from polls.models import Task
+from polls.tests.helpers import create_user
 
 
 class TaskCreateViewTest(TestCase):
     """
     Task create view test class definition.
     """
+    @classmethod
+    def setUpTestData(cls):
+        """Sets up required objects like creating a test user."""
+        cls.user = create_user()
+
     def setUp(self):
-        """
-        Sets up required objects like creating a test user and login.
-        """
-        username = 'testuser'
-        password = 'testpass'
-        user_model_class = get_user_model()
-        self.user = user_model_class.objects.create_user(
-            username, password=password
-        )
-        self.client.login(username=username, password=password)
+        """Sets up the user login step."""
+        self.client.force_login(self.user)
 
     def test_view_url_exists_at_desired_location(self):
         """
@@ -76,17 +72,14 @@ class TaskListViewTest(TestCase):
     """
     Task create view test class definition.
     """
+    @classmethod
+    def setUpTestData(cls):
+        """Sets up required objects like creating a test user."""
+        cls.user = create_user()
+
     def setUp(self):
-        """
-        Sets up required objects like creating a test user and login.
-        """
-        username = 'testuser'
-        password = 'testpass'
-        user_model_class = get_user_model()
-        self.user = user_model_class.objects.create_user(
-            username, password=password
-        )
-        self.client.login(username=username, password=password)
+        """Sets up the user login step."""
+        self.client.force_login(self.user)
 
     def test_view_url_exists_at_desired_location(self):
         """
@@ -138,24 +131,19 @@ class TaskListViewTest(TestCase):
 
 
 class TaskDetailViewTest(TestCase):
-    """
-    Task detail view test class definition.
-    """
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up required objects like creating a test user and a task object.
+        """
+        cls.user = create_user()
+        cls.task = Task.objects.create( # pylint: disable=E1101
+            name='Task 1', created_by=cls.user
+        )
+
     def setUp(self):
-        """
-        Sets up required objects like creating a test usern test task and
-        login.
-        """
-        username = 'testuser'
-        password = 'testpass'
-        user_model_class = get_user_model()
-        self.user = user_model_class.objects.create_user(
-            username, password=password
-        )
-        self.client.login(username=username, password=password)
-        self.task = Task.objects.create( # pylint: disable=E1101
-            name='Task 1', created_by=self.user
-        )
+        """Sets up the user login step."""
+        self.client.force_login(self.user)
 
     def test_view_url_exists_at_desired_location(self):
         """
