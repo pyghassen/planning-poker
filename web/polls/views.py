@@ -47,6 +47,11 @@ class VoteCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse_lazy('task-detail', args=[self.kwargs['task_id']])
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_id'] = context['form'].task_id
+        return context
+
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
