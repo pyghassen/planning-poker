@@ -31,19 +31,3 @@
   </div>
 </div>
 {% endblock content %}
-
-{% block extra_js %}
-<script>
-    var voteResultsSocket = new WebSocket('ws://' + window.location.host + '/ws/vote_results');
-
-    voteResultsSocket.onmessage = function(e) {
-        var data = JSON.parse(e.data);
-        console.log(data)
-    };
-
-    voteResultsSocket.onclose = function(e) {
-        console.log(e)
-        console.error('Chat socket closed unexpectedly');
-    };
-</script>
-{% endblock extra_js %}
