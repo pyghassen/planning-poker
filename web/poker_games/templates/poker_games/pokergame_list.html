@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row my-5">
+    <div class="col-11">
+      <h2>Planning Poker Games</h2>
+    </div>
+    <div class="col-1">
+      <a href="{% url 'poker-game-create' %}" class="btn btn-success"><i class="fas fa-plus-circle"></i></a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      {% if object_list %}
+        <table class="table table-striped">
+          <tr>
+            <th>Poker Game name</th>
+            <th>Number of tasks</th>
+            <th>Created by</th>
+            <th>Created at</th>
+            <th>Actions</th>
+          </tr>
+          {% for poker_game in object_list %}
+          <tr>
+            <td><a href="{% url 'poker-game-detail' poker_game.id %}">{{ poker_game.name }}</a></td>
+            <td>{{ poker_game.task_set.count }}</td>
+            <td>{{ poker_game.created_by }}</td>
+            <td>{{ poker_game.created_at }}</td>
+            <td>
+              <a href="" class="btn btn-info"><i class="far fa-edit"></i></a>
+              <a href="{% url 'poker-game-delete' poker_game.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <p>No poker_games were created yet!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

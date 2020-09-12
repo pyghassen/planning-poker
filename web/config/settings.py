@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     'home.apps.HomeConfig',
     'polls.apps.PollsConfig',
+    'poker_games.apps.PokerGamesConfig',
 
 ]
 
