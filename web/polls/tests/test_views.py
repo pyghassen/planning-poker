@@ -61,11 +61,11 @@ class TaskCreateViewTest(TestCase):
         """
         Verifies when we send request to `/polls/task/create` with invalid task
         creation data we see `Create Task` in the reponse while remaining in
-        page and useing the same form.
+        page and using the same form.
         """
         response = self.client.post(reverse('task-create'), follow=True)
         self.assertTemplateUsed(response, 'polls/task_form.html')
-        self.assertContains(response, 'Create Task')
+        self.assertContains(response, '<h1>Create task</h1>')
 
 
 class TaskListViewTest(TestCase):
