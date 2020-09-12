@@ -65,7 +65,7 @@ class TaskCreateViewTest(TestCase):
         """
         response = self.client.post(reverse('task-create'), follow=True)
         self.assertTemplateUsed(response, 'polls/task_form.html')
-        self.assertContains(response, '<h1>Create task</h1>')
+        self.assertContains(response, '<h1>Create Task</h1>')
 
 
 class TaskListViewTest(TestCase):
