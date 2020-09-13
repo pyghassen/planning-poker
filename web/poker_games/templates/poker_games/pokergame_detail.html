@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <h2>{{ object.name }}</h2>
+    </div>
+  </div>
+  <div class="row">
+    {% if task_list %}
+    <div class="col-12">
+      <table class="table table-striped">
+        <tr>
+          <th>Task name</th>
+          <th>Created by</th>
+          <th>Created at</th>
+          <th>Actions</th>
+        </tr>
+        {% for task in task_list %}
+        <tr>
+          <td><a href="{% url 'task-detail' task.id %}">{{ task.name }}</a></td>
+          <td>{{ task.created_by }}</td>
+          <td>{{ task.created_at }}</td>
+          <td>
+            <a href="{% url 'vote-create' task.id %}" class="btn btn-primary"><i class="fas fa-vote-yea"></i></a>
+            <a href="" class="btn btn-info"><i class="far fa-edit"></i></a>
+            <a href="{% url 'task-delete' task.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+        <p>No Tasks were added yet!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

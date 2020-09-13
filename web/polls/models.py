@@ -7,6 +7,8 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
+from poker_games.models import PokerGame
+
 
 PLANNING_CARDS = (
     ('0', '0'),
@@ -23,6 +25,7 @@ class Task(models.Model):
     """Task model definition."""
     name = models.CharField(max_length=200)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    poker_game = models.ForeignKey(PokerGame, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
