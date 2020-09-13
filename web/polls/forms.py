@@ -35,6 +35,7 @@ class VoteForm(forms.ModelForm):
     class Meta: # pylint: disable=R0903,C0111
         model = Vote
         fields = ['value']
+        widgets = {'value': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         """

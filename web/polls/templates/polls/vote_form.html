@@ -1,15 +1,120 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <h1>Submit vote</h1>
-  </div>
-  <div class="row">
+<div class="row">
+  <h1>Submit vote</h1>
+</div>
+<div class="row">
+  <div class="col-2 offset-5">
     <form method="post">{% csrf_token %}
       {{ form.as_p }}
-      <input class="btn btn-primary" type="submit" value="Vote">
+      <input type="image" id="card-empty" class="my-5 mb-5"src="{% static "polls/card-empty.svg" %}" width=100% alt="Submit">
     </form>
   </div>
 </div>
+<div id="select-message-part-1" class="row offset-4">
+  <h2>Please choose your card below</h2>
+</div>
+<div id="select-message-part-2" class="row offset-6">
+  <h2> 👇 </h2>
+</div>
+<div class="row my-5">
+  <div class="col-1">
+    <img id="card-0" src="{% static "polls/card-0.svg" %}" alt="card 0" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-1-2" src="{% static "polls/card-1-2.svg" %}" alt="card 1/2" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-1" src="{% static "polls/card-1.svg" %}" alt="card 1" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-2" src="{% static "polls/card-2.svg" %}" alt="card 2" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-3" src="{% static "polls/card-3.svg" %}" alt="card 3" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-5" src="{% static "polls/card-5.svg" %}" alt="card 5" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-8" src="{% static "polls/card-8.svg" %}" alt="card 8" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-13" src="{% static "polls/card-13.svg" %}" alt="card 13" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-20" src="{% static "polls/card-20.svg" %}" alt="card 20" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-40" src="{% static "polls/card-40.svg" %}" alt="card 40" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-100" src="{% static "polls/card-100.svg" %}" alt="card 10" width="100%">
+  </div>
+  <div class="col-1">
+    <img id="card-exclamation-point" src="{% static "polls/card-exclamation-point.svg" %}" alt="card ?" width="100%">
+  </div>
+</div>
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function(){
+  const cardEmpty = $( "#card-empty" );
+  const voteInput = $( "#id_value" );
+  var voteValue;
+  var lastCardSelected;
+  var cards = [
+    {"id": "#card-0", "value": "0"},
+    {"id": "#card-1-2", "value": "1/2"},
+    {"id": "#card-1", "value": "1"},
+    {"id": "#card-2", "value": "2"},
+    {"id": "#card-3", "value": "3"},
+    {"id": "#card-5", "value": "5"},
+    {"id": "#card-8", "value": "8"},
+    {"id": "#card-13", "value": "13"},
+    {"id": "#card-20", "value": "20"},
+    {"id": "#card-40", "value": "40"},
+    {"id": "#card-100", "value": "100"},
+    {"id": "#card-exclamation-point", "value": "?"},
+  ]
+
+  function showConfirmMessage(value) {
+    let selectMessagePart1 = $( "#select-message-part-1" );
+    selectMessagePart1.removeClass("offset-4");
+    selectMessagePart1.addClass("offset-6");
+    selectMessagePart1.html("<h2> 👆 </h2>");
+    let selectMessagePart2 = $( "#select-message-part-2" );
+    selectMessagePart2.removeClass("offset-6");
+    selectMessagePart2.addClass("offset-2");
+    selectMessagePart2.html("<h2>Please click on the card above to confirm your choice</h2>");
+
+  }
+
+  function selectCard(event){
+    let currentCardSelector = $( this )
+    currentCardSelector.prop('disabled',true).css('opacity',0.5);
+      if (lastCardSelected != undefined) {
+        $( lastCardSelected ).prop('disabled',false).css('opacity',1);
+      }
+      lastCardSelected = this;
+      cardEmpty.attr("src", currentCardSelector.attr("src"));
+      showConfirmMessage();
+      voteValue = event.data.value;
+  }
+
+  function setVoteValue(){
+    voteInput.attr("value", voteValue);
+  }
+  cardEmpty.on("click", setVoteValue);
+
+
+  for (let i=0; i < cards.length; i++){
+    console.log(cards[i]["id"]);
+    $( cards[i]["id"] ).on("click", {value: cards[i]["value"]}, selectCard);
+  }
+});
+</script>
+{% endblock extra_js %}

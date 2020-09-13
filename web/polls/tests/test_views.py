@@ -1,11 +1,11 @@
-"""
-Task views test modules.
-"""
+"""Task views test modules."""
 from django.test import TestCase
 from django.urls import reverse
 
-from polls.models import Task
+from polls.forms import VoteForm
+from polls.models import Task, Vote
 from polls.tests.helpers import create_user
+from polls.views import VoteCreateView
 
 
 class TaskCreateViewTest(TestCase):
@@ -232,3 +232,71 @@ class TaskDetailViewTest(TestCase):
         """
         response = self.client.get(reverse('task-detail', args=[self.task.id]))
         self.assertContains(response, 'Task 1')
+
+
+class VoteCreateViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Sets up required objects like creating a test user and a task object.
+        """
+        cls.user = create_user()
+        cls.task = Task.objects.create( # pylint: disable=E1101
+            name='Task 1', created_by=cls.user
+        )
+
+    def setUp(self):
+        """Sets up the user login step."""
+        self.client.force_login(self.user)
+
+    def test_view_url_exists_at_desired_location(self):
+        """
+        Verifies getting 200 as status code when we send request to
+        `/polls/vote/create/<task_id>`.
+        """
+        response = self.client.get(f'/polls/vote/create/{self.task.id}')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        """
+        Verifies getting 200 as status code when we send request to
+        `/polls/vote/create/<task_id>` while we use reverse function to get the
+        URL.
+        """
+        response = self.client.get(reverse('vote-create', args=[self.task.id]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        """
+        Verifies when we send request to `/polls/vote/create/<task_id>` we use
+        correct tempalte for the response.
+        """
+        response = self.client.get(reverse('vote-create', args=[self.task.id]))
+        self.assertTemplateUsed(response, 'polls/vote_form.html')
+
+    def test_view_uses_correct_context_data(self):
+        """
+        Verifies when we send request to `/polls/vote/create/<task_id>` we use
+        correct context data.
+        """
+        response = self.client.get(reverse('vote-create', args=[self.task.id]))
+        self.assertEqual(response.context_data['task_id'], self.task.id)
+        self.assertIsInstance(response.context_data['form'], VoteForm)
+        self.assertIsInstance(response.context_data['view'], VoteCreateView)
+
+    def test_view_returns_task_detail(self):
+        """
+        Verifies when we send request to `/polls/vote/create/<task_id>` we see
+        `Task 1` on the response.
+        """
+        url = reverse('vote-create', args=[self.task.id])
+        value = '3'
+        response = self.client.post(url, {'value': value}, follow=True)
+        self.assertContains(response, '<h2>Task name: Task 1</h2>')
+        self.assertContains(response, f'<td>{self.user}</td>')
+        self.assertContains(response, f'<td>{value}</td>')
+        self.assertTrue(
+            Vote.objects.filter(
+                task=self.task, user=self.user, value=value
+            ).exists()
+        )

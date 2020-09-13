@@ -1,10 +1,10 @@
 """
 Polls models test module.
 """
+from django.contrib.auth.models import User
 from django.test import TestCase
 
 from polls.tests.helpers import create_user
-from django.contrib.auth.models import User
 
 
 class TaskModelTest(TestCase):
