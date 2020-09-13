@@ -20,8 +20,9 @@
         <td>{{ task.created_by }}</td>
         <td>{{ task.created_at }}</td>
         <td>
-          <a href="{% url 'vote-create' task.id %}" class="btn btn-primary">Vote</a>
-          <a href="{% url 'task-delete' task.id %}" class="btn btn-danger">Delete</a>
+          <a href="{% url 'vote-create' task.id %}" class="btn btn-primary"><i class="fas fa-vote-yea"></i></a>
+          <a href="" class="btn btn-info"><i class="far fa-edit"></i></a>
+          <a href="{% url 'task-delete' task.id %}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
         </td>
       </tr>
       {% endfor %}
