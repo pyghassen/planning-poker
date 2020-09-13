@@ -30,8 +30,8 @@ class PokerGameListView(LoginRequiredMixin, ListView):
 class PokerGameDetailView(LoginRequiredMixin, DetailView):
     model = PokerGame
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['task_list'] = Task.objects.filter(poker_game_id=self.object.id)
         return context
 

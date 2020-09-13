@@ -1,6 +1,4 @@
-"""
-Forms module contains the PokerGameForm and the class definition.
-"""
+"""Forms module contains the PokerGameForm and the class definition."""
 from django import forms
 
 from poker_games.models import PokerGame
@@ -8,6 +6,7 @@ from poker_games.models import PokerGame
 
 class PokerGameForm(forms.ModelForm):
     """PokerGame form class definition."""
+
     class Meta: # pylint: disable=R0903,C0111
         model = PokerGame
         fields = ['name']
